@@ -63,7 +63,7 @@ class LoanProcessor:
            'NoOfPreviousLoansBeforeLoan', 'AmountOfPreviousLoansBeforeLoan']
         
         loan_df = df[loan_features]
-        X = pd.DataFrame(self.loan_scaler_x.fit_transform(loan_df), columns=loan_df.columns)
+        X = pd.DataFrame(self.loan_scaler_x.transform(loan_df), columns=loan_df.columns)
         X = X.values.reshape(1, -1)
         
         y_pred = self.loan_model.predict(X).reshape(-1, 1)
