@@ -24,10 +24,10 @@ class LoanProcessor:
         self.interest_scaler_y = interest_scaler_y
         
         # Load models
-        self.loan_model = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/Project/Models/loan_model.joblib')
-        self.defaultprob_model = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/Project/Models/defaultprob_model.joblib')
-        self.expreturn_model = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/Project/Models/expreturn_model.joblib')
-        self.interest_model = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/Project/Models/interest_model.joblib')
+        self.loan_model = joblib.load('Models/loan_model.joblib')
+        #self.defaultprob_model = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/Project/Models/defaultprob_model.joblib')
+        #self.expreturn_model = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/Project/Models/expreturn_model.joblib')
+        #self.interest_model = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/Project/Models/interest_model.joblib')
         
     
      def data_preprocessor(self, data):

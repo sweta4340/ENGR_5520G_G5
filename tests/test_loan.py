@@ -12,15 +12,15 @@ class TestLoanAmountTolerance(unittest.TestCase):
         This method will run once before all tests in this class.
         Use this to load models and scalers.
         """
-        cls.encoder = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/data_encoder.pkl')
-        cls.loan_scaler_x = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Loan_Amount_Prediction/loan_scaler_X.pkl')
-        cls.loan_scaler_y = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Loan_Amount_Prediction/loan_scaler_y.pkl')
-        cls.defaultprob_scaler_x = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Default_Probability_Prediction/defaultprob_scaler_X.pkl')
-        cls.defaultprob_scaler_y = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Default_Probability_Prediction/defaultprob_scaler_y.pkl')
-        cls.expreturn_scaler_x = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Expected_Return_Prediction/expreturn_scaler_X.pkl')
-        cls.expreturn_scaler_y = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Expected_Return_Prediction/expreturn_scaler_y.pkl')
-        cls.interest_scaler_x = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Interest_Rate_Prediction/interest_scaler_X.pkl')
-        cls.interest_scaler_y = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Interest_Rate_Prediction/interest_scaler_y.pkl')
+        cls.encoder = joblib.load('data_encoder.pkl')
+        cls.loan_scaler_x = joblib.load('Loan_Amount_Prediction/loan_scaler_X.pkl')
+        cls.loan_scaler_y = joblib.load('Loan_Amount_Prediction/loan_scaler_y.pkl')
+        cls.defaultprob_scaler_x = joblib.load('Default_Probability_Prediction/defaultprob_scaler_X.pkl')
+        cls.defaultprob_scaler_y = joblib.load('Default_Probability_Prediction/defaultprob_scaler_y.pkl')
+        cls.expreturn_scaler_x = joblib.load('Expected_Return_Prediction/expreturn_scaler_X.pkl')
+        cls.expreturn_scaler_y = joblib.load('Expected_Return_Prediction/expreturn_scaler_y.pkl')
+        cls.interest_scaler_x = joblib.load('Interest_Rate_Prediction/interest_scaler_X.pkl')
+        cls.interest_scaler_y = joblib.load('Interest_Rate_Prediction/interest_scaler_y.pkl')
 
     def test_loan_amount_with_unrealistic_input(self):
         test_case_1 = {
