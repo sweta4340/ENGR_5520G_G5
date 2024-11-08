@@ -1,9 +1,9 @@
 import unittest
 import joblib
+import pandas as pd
+import numpy as np
 import sys
 from Parse_Input import LoanProcessor
-import numpy as np
-import pandas as pd
 
 class TestLoanAmountTolerance(unittest.TestCase):
     @classmethod
