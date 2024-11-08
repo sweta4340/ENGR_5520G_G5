@@ -7,7 +7,7 @@ from Parse_Input import LoanProcessor
 
 class TestLoanAmountTolerance(unittest.TestCase):
     @classmethod
-    def test_loan(cls):
+    def setUpClass(cls):
         """
         This method will run once before all tests in this class.
         Use this to load models and scalers.
