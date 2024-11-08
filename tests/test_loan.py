@@ -1,80 +1,78 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[7]:
-
-
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-import sys
-sys.path.append("C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5")  # Only the directory
-from Parse_Input import LoanProcessor
 import unittest
 import joblib
+import sys
+from Parse_Input import LoanProcessor
+import numpy as np
+import pandas as pd
+
 class TestLoanAmountTolerance(unittest.TestCase):
-    def tolerenace_test(self):
-        #self.assertEqual(3, 3)
-        #self.assertEqual(-1,0)
-        
+    @classmethod
+    def setUpClass(cls):
+        """
+        This method will run once before all tests in this class.
+        Use this to load models and scalers.
+        """
+        cls.encoder = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/data_encoder.pkl')
+        cls.loan_scaler_x = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Loan_Amount_Prediction/loan_scaler_X.pkl')
+        cls.loan_scaler_y = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Loan_Amount_Prediction/loan_scaler_y.pkl')
+        cls.defaultprob_scaler_x = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Default_Probability_Prediction/defaultprob_scaler_X.pkl')
+        cls.defaultprob_scaler_y = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Default_Probability_Prediction/defaultprob_scaler_y.pkl')
+        cls.expreturn_scaler_x = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Expected_Return_Prediction/expreturn_scaler_X.pkl')
+        cls.expreturn_scaler_y = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Expected_Return_Prediction/expreturn_scaler_y.pkl')
+        cls.interest_scaler_x = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Interest_Rate_Prediction/interest_scaler_X.pkl')
+        cls.interest_scaler_y = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Interest_Rate_Prediction/interest_scaler_y.pkl')
+
+    def test_loan_amount_with_unrealistic_input(self):
         test_case_1 = {
-            'NewCreditCustomer': 0,                # No new credit customer, but no data on previous credit
-            'VerificationType': 'Income_unverified',             # No verification type specified
-            'Age': 0,                              # Age as zero (unrealistic, but tests edge case handling)
-            'Gender': 'Unknown',                   # Gender not specified
-            'AppliedAmount': 0,                     # No loan amount applied for
-            'UseOfLoan': 'Not_set',                    # No loan purpose specified
-            'EmploymentStatus': 'Unknown',          # Employment status unknown
-            'EmploymentDurationCurrentEmployer': 'Not_known', # No employment duration
-            'OccupationArea': 'Not_specified',            # Occupation area not specified
-            'HomeOwnershipType': 'Unknown',        # Homeownership type not specified
-            'TotalIncome': 0,                       # No income reported
-            'TotalLiabilities': 0,                  # No liabilities reported
-            'DebtToIncome': 0,                      # No debt-to-income ratio (effectively zero debt and zero income)
-            'FreeCash': 0,                          # No free cash
-            'Rating': 0,                            # No credit rating
-            'CreditScoreEsMicroL': 'M9',               # No credit score
-            'CreditScoreEeMini': 0,                 # No credit score
-            'NoOfPreviousLoansBeforeLoan': 0,       # No previous loans
-            'AmountOfPreviousLoansBeforeLoan': 0    # No previous loan amounts
+            'NewCreditCustomer': 0,
+            'VerificationType': 'Income_unverified',
+            'Age': 0,
+            'Gender': 'Unknown',
+            'AppliedAmount': 0,
+            'UseOfLoan': 'Not_set',
+            'EmploymentStatus': 'Unknown',
+            'EmploymentDurationCurrentEmployer': 'Not_known',
+            'OccupationArea': 'Not_specified',
+            'HomeOwnershipType': 'Unknown',
+            'TotalIncome': 0,
+            'TotalLiabilities': 0,
+            'DebtToIncome': 0,
+            'FreeCash': 0,
+            'Rating': 0,
+            'CreditScoreEsMicroL': 'M9',
+            'CreditScoreEeMini': 0,
+            'NoOfPreviousLoansBeforeLoan': 0,
+            'AmountOfPreviousLoansBeforeLoan': 0
         }
 
-        encoder = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/data_encoder.pkl')
-        loan_scaler_x = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Loan_Amount_Prediction/loan_scaler_X.pkl')
-        loan_scaler_y = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Loan_Amount_Prediction/loan_scaler_y.pkl')
-
-        defaultprob_scaler_x = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Default_Probability_Prediction/defaultprob_scaler_X.pkl')
-        defaultprob_scaler_y = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Default_Probability_Prediction/defaultprob_scaler_y.pkl')
-
-        expreturn_scaler_x = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Expected_Return_Prediction/expreturn_scaler_X.pkl')
-        expreturn_scaler_y = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Expected_Return_Prediction/expreturn_scaler_y.pkl')
-
-        interest_scaler_x = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Interest_Rate_Prediction/interest_scaler_X.pkl')
-        interest_scaler_y = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Interest_Rate_Prediction/interest_scaler_y.pkl')
-
-
-
-        loan_processor = LoanProcessor(encoder, loan_scaler_x, loan_scaler_y, defaultprob_scaler_x, defaultprob_scaler_y, expreturn_scaler_x,       expreturn_scaler_y, interest_scaler_x, interest_scaler_y)
+        # Create loan processor instance
+        loan_processor = LoanProcessor(
+            self.encoder, self.loan_scaler_x, self.loan_scaler_y,
+            self.defaultprob_scaler_x, self.defaultprob_scaler_y,
+            self.expreturn_scaler_x, self.expreturn_scaler_y,
+            self.interest_scaler_x, self.interest_scaler_y
+        )
 
         df = loan_processor.data_preprocessor(test_case_1)
         loan_amount = loan_processor.predict_loan(df)
 
         min_amount = 740
         max_amount = 3825
-        
-        self.assertGreaterEqual(loan_amount, min_amount, 
+
+        # Assert the loan amount is within the expected range
+        self.assertGreaterEqual(loan_amount, min_amount,
                                 f"Loan amount is below the minimum expected: {loan_amount}")
-        self.assertLessEqual(loan_amount, max_amount, 
+        self.assertLessEqual(loan_amount, max_amount,
                              f"Loan amount is above the maximum expected: {loan_amount}")
+
+    @classmethod
+    def tearDownClass(cls):
+        """
+        This method will run once after all tests in this class.
+        You can use this to clean up any resources, if necessary.
+        """
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()
-
-
-
-# In[ ]:
-
-
-
-
