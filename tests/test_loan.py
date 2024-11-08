@@ -22,6 +22,7 @@ class TestLoanAmountTolerance(unittest.TestCase):
         cls.interest_scaler_x = joblib.load('Interest_Rate_Prediction/interest_scaler_X.pkl')
         cls.interest_scaler_y = joblib.load('Interest_Rate_Prediction/interest_scaler_y.pkl')
 
+    def test_loan(self):
         test_case_1 = {
             'NewCreditCustomer': 0,
             'VerificationType': 'Income_unverified',
