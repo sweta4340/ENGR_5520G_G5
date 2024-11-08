@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+# In[7]:
+
+
+#!/usr/bin/env python
+# coding: utf-8
+
 # In[ ]:
 import sys
 sys.path.append("C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5")  # Only the directory
@@ -38,7 +44,7 @@ class TestLoanAmountTolerance(unittest.TestCase):
         loan_scaler_y = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Loan_Amount_Prediction/loan_scaler_y.pkl')
 
         defaultprob_scaler_x = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Default_Probability_Prediction/defaultprob_scaler_X.pkl')
-    defaultprob_scaler_y = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Default_Probability_Prediction/defaultprob_scaler_y.pkl')
+        defaultprob_scaler_y = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Default_Probability_Prediction/defaultprob_scaler_y.pkl')
 
         expreturn_scaler_x = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Expected_Return_Prediction/expreturn_scaler_X.pkl')
         expreturn_scaler_y = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/ENGR_5520G_G5/Expected_Return_Prediction/expreturn_scaler_y.pkl')
@@ -63,4 +69,11 @@ class TestLoanAmountTolerance(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+
+# In[ ]:
+
+
+
 
