@@ -7,7 +7,7 @@ from Parse_Input import LoanProcessor
 
 class TestLoanAmountTolerance(unittest.TestCase):
     @classmethod
-    def setUpClass(cls):
+    def test_loan(cls):
         """
         This method will run once before all tests in this class.
         Use this to load models and scalers.
@@ -22,7 +22,6 @@ class TestLoanAmountTolerance(unittest.TestCase):
         cls.interest_scaler_x = joblib.load('Interest_Rate_Prediction/interest_scaler_X.pkl')
         cls.interest_scaler_y = joblib.load('Interest_Rate_Prediction/interest_scaler_y.pkl')
 
-    def test_loan_amount_with_unrealistic_input(self):
         test_case_1 = {
             'NewCreditCustomer': 0,
             'VerificationType': 'Income_unverified',
