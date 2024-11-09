@@ -80,8 +80,18 @@ class TestLoanAmountTolerance(unittest.TestCase):
 
         min_amount = 740
         max_amount = 3825
+        
+         # Predicting loan for person having high liabilites applying for high loan.
+        df = loan_processor.data_preprocessor(test_case_2)
+        loan_amount = loan_processor.predict_loan(df)
+        
+        print("Predicting loan for person having high liabilites applying for high loan.")
+        self.assertGreaterEqual(loan_amount, min_amount,
+                                f"Loan amount is below the minimum expected: {loan_amount}")
+        self.assertLessEqual(loan_amount, max_amount,
+                             f"Loan amount is above the maximum expected: {loan_amount}")
 
-        # Assertting the loan amount is within the expected range.
+        # Edge case where the inputs are either zero or unknown
         df = loan_processor.data_preprocessor(test_case_1)
         loan_amount = loan_processor.predict_loan(df)
         
@@ -91,15 +101,7 @@ class TestLoanAmountTolerance(unittest.TestCase):
         self.assertLessEqual(loan_amount, max_amount,
                              f"Loan amount is above the maximum expected: {loan_amount}")
         
-        # Predicting loan for person having high liabilites applying for high loan.
-        df = loan_processor.data_preprocessor(test_case_2)
-        loan_amount = loan_processor.predict_loan(df)
-        
-        print("Predicting loan for person having high liabilites applying for high loan.")
-        self.assertGreaterEqual(loan_amount, min_amount,
-                                f"Loan amount is below the minimum expected: {loan_amount}")
-        self.assertLessEqual(loan_amount, max_amount,
-                             f"Loan amount is above the maximum expected: {loan_amount}")
+       
         
 if __name__ == '__main__':
     unittest.main()
