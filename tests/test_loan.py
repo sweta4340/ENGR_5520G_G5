@@ -76,7 +76,7 @@ class TestLoanAmountTolerance(unittest.TestCase):
             'AppliedAmount': 100000,               # Extremely high loan amount
             'UseOfLoan': 'Business',               
             'EmploymentStatus': 'Self-Employed',       
-            'EmploymentDurationCurrentEmployer': 'UpTo5years',
+            'EmploymentDurationCurrentEmployer': 'UpTo5Years',
             'OccupationArea': 'Real_estate',             
             'HomeOwnershipType': 'Mortgage',           
             'TotalIncome': 200000,                
@@ -112,24 +112,24 @@ class TestLoanAmountTolerance(unittest.TestCase):
     def test_loan_with_ideal_output(self):
         test_case_3 = {
             'NewCreditCustomer': 'Existing_credit_customer',              
-            'VerificationType': 'Income_verified',          
-            'Age': 45,                             
+            'VerificationType': 'Income_unverified',          
+            'Age': 50,                             
             'Gender': 'Female',                    
-            'AppliedAmount': 1000,               
-            'UseOfLoan': 'Home_improvement',               
-            'EmploymentStatus': 'Fully-Employed',       
-            'EmploymentDurationCurrentEmployer': 'UpTo5years',
+            'AppliedAmount': 3000,               
+            'UseOfLoan': 'Business',               
+            'EmploymentStatus': 'Entrepreneur',       
+            'EmploymentDurationCurrentEmployer': 'MoreThan5Years',
             'OccupationArea': 'Retail_and_wholesale',             
-            'HomeOwnershipType': 'Mortgage',           
-            'TotalIncome': 2000000,                
-            'TotalLiabilities': 10000,            
-            'DebtToIncome': 1.52,                  
-            'FreeCash': 11.0,                     
-            'Rating': 'A',                         
+            'HomeOwnershipType': 'Owner',           
+            'TotalIncome': 900,                
+            'TotalLiabilities': 740.45,            
+            'DebtToIncome': 30.58,                  
+            'FreeCash': 78.8,                     
+            'Rating': 'B',                         
             'CreditScoreEsMicroL': 'M',           
             'CreditScoreEeMini': 1000,             
-            'NoOfPreviousLoansBeforeLoan': 0,    
-            'AmountOfPreviousLoansBeforeLoan': 0 }
+            'NoOfPreviousLoansBeforeLoan': 1.0,    
+            'AmountOfPreviousLoansBeforeLoan': 1800.0 }
         
         loan_processor = LoanProcessor(
         self.encoder, self.loan_scaler_x, self.loan_scaler_y,
