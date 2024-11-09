@@ -47,7 +47,7 @@ class TestLoanAmountTolerance(unittest.TestCase):
             'AmountOfPreviousLoansBeforeLoan': 0
         }
 
-        edge_case_2 = {
+        test_case_2 = {
             'NewCreditCustomer': 0,              
             'VerificationType': 'Income_verified',          
             'Age': 45,                             
