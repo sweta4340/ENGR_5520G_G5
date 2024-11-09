@@ -24,7 +24,7 @@ class TestLoanAmountTolerance(unittest.TestCase):
     
     
     # Edge case where all the inputs are either zero or unknown. Difficult to determine the prediction.
-    def test_loan(self):
+    def test_loan_with_zero_unknown(self):
         test_case_1 = {
             'NewCreditCustomer': 0,
             'VerificationType': 'Income_unverified',
@@ -44,9 +44,30 @@ class TestLoanAmountTolerance(unittest.TestCase):
             'CreditScoreEsMicroL': 'M9',
             'CreditScoreEeMini': 0,
             'NoOfPreviousLoansBeforeLoan': 0,
-            'AmountOfPreviousLoansBeforeLoan': 0
-        }
+            'AmountOfPreviousLoansBeforeLoan': 0 }
+            
+            loan_processor = LoanProcessor(
+            self.encoder, self.loan_scaler_x, self.loan_scaler_y,
+            self.defaultprob_scaler_x, self.defaultprob_scaler_y,
+            self.expreturn_scaler_x, self.expreturn_scaler_y,
+            self.interest_scaler_x, self.interest_scaler_y)
 
+
+            min_amount = 740
+            max_amount = 3825
+            
+              # Edge case where the inputs are either zero or unknown
+            df = loan_processor.data_preprocessor(test_case_1)
+            loan_amount = loan_processor.predict_loan(df)
+
+            print("Edge case where the inputs are either zero or unknown")
+            self.assertGreaterEqual(loan_amount, min_amount,
+                                    f"Loan amount is below the minimum expected: {loan_amount}")
+            self.assertLessEqual(loan_amount, max_amount,
+                                 f"Loan amount is above the maximum expected: {loan_amount}")
+        
+     # Case when person has high liabilites applying for high amount.
+     def test_loan_with_high_liabilties(self):
         test_case_2 = {
             'NewCreditCustomer': 0,              
             'VerificationType': 'Income_verified',          
@@ -66,42 +87,17 @@ class TestLoanAmountTolerance(unittest.TestCase):
             'CreditScoreEsMicroL': 'M',           
             'CreditScoreEeMini': 730,             
             'NoOfPreviousLoansBeforeLoan': 2,    
-            'AmountOfPreviousLoansBeforeLoan': 50000 
-}
+            'AmountOfPreviousLoansBeforeLoan': 50000 }
+            
+             # Predicting loan for person having high liabilites applying for high loan.
+            df = loan_processor.data_preprocessor(test_case_2)
+            loan_amount = loan_processor.predict_loan(df)
 
-        
-        loan_processor = LoanProcessor(
-            self.encoder, self.loan_scaler_x, self.loan_scaler_y,
-            self.defaultprob_scaler_x, self.defaultprob_scaler_y,
-            self.expreturn_scaler_x, self.expreturn_scaler_y,
-            self.interest_scaler_x, self.interest_scaler_y
-        )
-
-
-        min_amount = 740
-        max_amount = 3825
-        
-         # Predicting loan for person having high liabilites applying for high loan.
-        df = loan_processor.data_preprocessor(test_case_2)
-        loan_amount = loan_processor.predict_loan(df)
-        
-        print("Predicting loan for person having high liabilites applying for high loan.")
-        self.assertGreaterEqual(loan_amount, min_amount,
-                                f"Loan amount is below the minimum expected: {loan_amount}")
-        self.assertLessEqual(loan_amount, max_amount,
-                             f"Loan amount is above the maximum expected: {loan_amount}")
-
-        # Edge case where the inputs are either zero or unknown
-        df = loan_processor.data_preprocessor(test_case_1)
-        loan_amount = loan_processor.predict_loan(df)
-        
-        print("Edge case where the inputs are either zero or unknown")
-        self.assertGreaterEqual(loan_amount, min_amount,
-                                f"Loan amount is below the minimum expected: {loan_amount}")
-        self.assertLessEqual(loan_amount, max_amount,
-                             f"Loan amount is above the maximum expected: {loan_amount}")
-        
-       
+            print("Predicting loan for person having high liabilites applying for high loan.")
+            self.assertGreaterEqual(loan_amount, min_amount,
+                                    f"Loan amount is below the minimum expected: {loan_amount}")
+            self.assertLessEqual(loan_amount, max_amount,
+                                 f"Loan amount is above the maximum expected: {loan_amount}")     
         
 if __name__ == '__main__':
     unittest.main()
