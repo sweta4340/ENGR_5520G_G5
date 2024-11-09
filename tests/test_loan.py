@@ -26,7 +26,7 @@ class TestLoanAmountTolerance(unittest.TestCase):
     # Edge case where all the inputs are either zero or unknown. Difficult to determine the prediction.
     def test_loan_with_zero_unknown(self):
         test_case_1 = {
-            'NewCreditCustomer': 0,
+            'NewCreditCustomer': 'New_credit_customer',
             'VerificationType': 'Income_unverified',
             'Age': 0,
             'Gender': 'Unknown',
@@ -69,7 +69,7 @@ class TestLoanAmountTolerance(unittest.TestCase):
     # Case when person has high liabilites applying for high amount.
     def test_loan_with_high_liabilties(self):
         test_case_2 = {
-            'NewCreditCustomer': 0,              
+            'NewCreditCustomer': 'Existing_credit_customer',              
             'VerificationType': 'Income_verified',          
             'Age': 45,                             
             'Gender': 'Female',                    
@@ -111,7 +111,7 @@ class TestLoanAmountTolerance(unittest.TestCase):
     # Ideal ouput scenario.        
     def test_loan_with_ideal_output(self):
         test_case_3 = {
-            'NewCreditCustomer': 0,              
+            'NewCreditCustomer': 'Existing_credit_customer',              
             'VerificationType': 'Income_verified',          
             'Age': 45,                             
             'Gender': 'Female',                    
