@@ -80,9 +80,9 @@ class TestLoanAmountTolerance(unittest.TestCase):
             'OccupationArea': 'Real_estate',             
             'HomeOwnershipType': 'Mortgage',           
             'TotalIncome': 200000,                
-            'TotalLiabilities': 50000000,    # Extremely high liabilities         
+            'TotalLiabilities':  12400001,    # Extremely high liabilities         
             'DebtToIncome': 0.25,                  
-            'FreeCash': 15000,                     
+            'FreeCash': 15.0,                     
             'Rating': 'F',                         
             'CreditScoreEsMicroL': 'M',           
             'CreditScoreEeMini': 730,             
@@ -124,7 +124,7 @@ class TestLoanAmountTolerance(unittest.TestCase):
             'TotalIncome': 2000000,                
             'TotalLiabilities': 10000,            
             'DebtToIncome': 1.52,                  
-            'FreeCash': 15000,                     
+            'FreeCash': 11.0,                     
             'Rating': 'A',                         
             'CreditScoreEsMicroL': 'M',           
             'CreditScoreEeMini': 1000,             
