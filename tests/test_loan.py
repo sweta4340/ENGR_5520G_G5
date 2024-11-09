@@ -21,6 +21,9 @@ class TestLoanAmountTolerance(unittest.TestCase):
 
         
     # Defining the test case for testing the correctness of the loan amount prediction. To check if the predicted value falls within the expected range.
+    
+    
+    # Edge case where all the inputs are either zero or unknown. Difficult to determine the prediction.
     def test_loan(self):
         test_case_1 = {
             'NewCreditCustomer': 0,
@@ -44,6 +47,29 @@ class TestLoanAmountTolerance(unittest.TestCase):
             'AmountOfPreviousLoansBeforeLoan': 0
         }
 
+        edge_case_2 = {
+            'NewCreditCustomer': 0,              
+            'VerificationType': 'Income_verified',          
+            'Age': 45,                             
+            'Gender': 'Female',                    
+            'AppliedAmount': 100000,               # Extremely high loan amount
+            'UseOfLoan': 'Business',               
+            'EmploymentStatus': 'Self-Employed',       
+            'EmploymentDurationCurrentEmployer': 'UpTo5years',
+            'OccupationArea': 'Real_estate',             
+            'HomeOwnershipType': 'Mortgage',           
+            'TotalIncome': 200000,                
+            'TotalLiabilities': 50000000,    # Extremely high liabilities         
+            'DebtToIncome': 0.25,                  
+            'FreeCash': 15000,                     
+            'Rating': 800,                         
+            'CreditScoreEsMicroL': 'M',           
+            'CreditScoreEeMini': 730,             
+            'NoOfPreviousLoansBeforeLoan': 2,    
+            'AmountOfPreviousLoansBeforeLoan': 50000 
+}
+
+        
         loan_processor = LoanProcessor(
             self.encoder, self.loan_scaler_x, self.loan_scaler_y,
             self.defaultprob_scaler_x, self.defaultprob_scaler_y,
@@ -51,18 +77,29 @@ class TestLoanAmountTolerance(unittest.TestCase):
             self.interest_scaler_x, self.interest_scaler_y
         )
 
-        df = loan_processor.data_preprocessor(test_case_1)
-        loan_amount = loan_processor.predict_loan(df)
 
         min_amount = 740
         max_amount = 3825
 
         # Assertting the loan amount is within the expected range.
+        df = loan_processor.data_preprocessor(test_case_1)
+        loan_amount = loan_processor.predict_loan(df)
+        
+        print("Edge case where the inputs are either zero or unknown")
         self.assertGreaterEqual(loan_amount, min_amount,
                                 f"Loan amount is below the minimum expected: {loan_amount}")
         self.assertLessEqual(loan_amount, max_amount,
                              f"Loan amount is above the maximum expected: {loan_amount}")
-
-
+        
+        # Predicting loan for person having high liabilites applying for high loan.
+        df = loan_processor.data_preprocessor(test_case_2)
+        loan_amount = loan_processor.predict_loan(df)
+        
+        print("Predicting loan for person having high liabilites applying for high loan.")
+        self.assertGreaterEqual(loan_amount, min_amount,
+                                f"Loan amount is below the minimum expected: {loan_amount}")
+        self.assertLessEqual(loan_amount, max_amount,
+                             f"Loan amount is above the maximum expected: {loan_amount}")
+        
 if __name__ == '__main__':
     unittest.main()
