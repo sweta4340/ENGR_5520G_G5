@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import pandas as pd
 import numpy as np
 import joblib
@@ -12,7 +6,7 @@ import joblib
 
 class LoanProcessor:
      def __init__(self, encoder, loan_scaler_x, loan_scaler_y, defaultprob_scaler_x, defaultprob_scaler_y, expreturn_scaler_x, expreturn_scaler_y, interest_scaler_x, interest_scaler_y):
-        # Initialize with all required encoders and scalers
+        # Initializing the required encoders and scalers.
         self.encoder = encoder
         self.loan_scaler_x = loan_scaler_x
         self.loan_scaler_y = loan_scaler_y
@@ -23,23 +17,20 @@ class LoanProcessor:
         self.interest_scaler_x = interest_scaler_x
         self.interest_scaler_y = interest_scaler_y
         
-        # Load models
+        # Loading the models.
         self.loan_model = joblib.load('Models/loan_model.joblib')
         #self.defaultprob_model = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/Project/Models/defaultprob_model.joblib')
         #self.expreturn_model = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/Project/Models/expreturn_model.joblib')
         #self.interest_model = joblib.load('C:/Users/KRISHNA/Desktop/SHWETA/Fall 2024/Project/Models/interest_model.joblib')
         
-    
+    # Function to preprocess the data. This function will handle the encoding and skewwness of the data.
      def data_preprocessor(self, data):
-        """Converts JSON data to DataFrame, encodes categorical features, and handles skewness."""
-        df = pd.DataFrame([data])
         
-        # Encode categorical columns
+        df = pd.DataFrame([data])
         categorical_columns = df.select_dtypes(include=['object']).columns.tolist()
         for column in categorical_columns:
             df[column] = self.encoder.fit_transform(df[column])
         
-        # Handle skewed features
         skewed_features = df.apply(lambda x: x.skew()).sort_values(ascending=False)
         threshold = 2
         features_to_transform = skewed_features[skewed_features.abs() > threshold].index.tolist()
@@ -54,6 +45,8 @@ class LoanProcessor:
                     df[column] = np.log1p(df[column])
         
         return df
+    
+    # Defining the function for predicting the loan.
      def predict_loan(self, df):
         loan_features = ['NewCreditCustomer', 'VerificationType', 'Age', 'Gender',
            'AppliedAmount', 'UseOfLoan', 'EmploymentStatus',
@@ -69,9 +62,10 @@ class LoanProcessor:
         y_pred = self.loan_model.predict(X).reshape(-1, 1)
         loan_amount = self.loan_scaler_y.inverse_transform(y_pred)
         
-        print("Loan Amount: " + str(loan_amount))
+        #print("Loan Amount: " + str(loan_amount))
         return loan_amount
-
+    
+   # Defining the fucntion for predicting the Default Probability.  
      def predict_prob(self, df):
         prob_features = ['AppliedAmount', 'Amount', 'UseOfLoan', 'TotalLiabilities', 'TotalIncome', 
                          'DebtToIncome', 'FreeCash', 'NewCreditCustomer', 'CreditScoreEsMicroL', 
@@ -80,13 +74,15 @@ class LoanProcessor:
                          'Rating', 'Restructured']
         
         prob_df = df[prob_features]
-        X = pd.DataFrame(self.defaultprob_scaler_x.fit_transform(prob_df), columns=prob_df.columns)
+        X = pd.DataFrame(self.defaultprob_scaler_x.transform(prob_df), columns=prob_df.columns)
         X = X.values.reshape(1, -1)
         
         y_pred = self.defaultprob_model.predict(X).reshape(-1, 1)
         default_prob = self.defaultprob_scaler_y.inverse_transform(y_pred)
         
         return default_prob
+    
+    # Defining the function for predicting the Expected Return.
 
      def predict_expreturn(self, df):
         expreturn_features = ['AppliedAmount', 'Amount', 'ProbabilityOfDefault', 'UseOfLoan', 'TotalLiabilities', 
@@ -96,13 +92,15 @@ class LoanProcessor:
                               'Rating', 'Restructured']
         
         expreturn_df = df[expreturn_features]
-        X = pd.DataFrame(self.expreturn_scaler_x.fit_transform(expreturn_df), columns=expreturn_df.columns)
+        X = pd.DataFrame(self.expreturn_scaler_x.transform(expreturn_df), columns=expreturn_df.columns)
         X = X.values.reshape(1, -1)
         
         y_pred = self.expreturn_model.predict(X).reshape(-1, 1)
         exp_return = self.expreturn_scaler_y.inverse_transform(y_pred)
         
         return np.log1p(exp_return)
+    
+    # Defining the fucntion for predicting the interest rate.
 
      def predict_interest(self, df):
         interest_features = ['AppliedAmount', 'Amount', 'UseOfLoan', 'NewCreditCustomer', 'Age', 'Gender', 
@@ -113,7 +111,7 @@ class LoanProcessor:
                              'Restructured']
         
         interest_df = df[interest_features]
-        X = pd.DataFrame(self.interest_scaler_x.fit_transform(interest_df), columns=interest_df.columns)
+        X = pd.DataFrame(self.interest_scaler_x.transform(interest_df), columns=interest_df.columns)
         X = X.values.reshape(1, -1)
         
         y_pred = self.interest_model.predict(X).reshape(-1, 1)
@@ -122,6 +120,7 @@ class LoanProcessor:
         print("Interest Amount: " + str(interest))
         return interest
     
+    # Defining the function for taking the input and giving the predictions for loan and interest.
      def parse_input(self, request):
         """Processes input data, makes predictions, and returns a DataFrame with results."""
         df = self.preprocess_data(request)
