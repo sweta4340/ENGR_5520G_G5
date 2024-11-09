@@ -40,7 +40,7 @@ class TestLoanAmountTolerance(unittest.TestCase):
             'TotalLiabilities': 0,
             'DebtToIncome': 0,
             'FreeCash': 0,
-            'Rating': 0,
+            'Rating': 'A',
             'CreditScoreEsMicroL': 'M9',
             'CreditScoreEeMini': 0,
             'NoOfPreviousLoansBeforeLoan': 0,
@@ -83,7 +83,7 @@ class TestLoanAmountTolerance(unittest.TestCase):
             'TotalLiabilities': 50000000,    # Extremely high liabilities         
             'DebtToIncome': 0.25,                  
             'FreeCash': 15000,                     
-            'Rating': 800,                         
+            'Rating': 'F',                         
             'CreditScoreEsMicroL': 'M',           
             'CreditScoreEeMini': 730,             
             'NoOfPreviousLoansBeforeLoan': 2,    
@@ -97,7 +97,41 @@ class TestLoanAmountTolerance(unittest.TestCase):
             self.assertGreaterEqual(loan_amount, min_amount,
                                     f"Loan amount is below the minimum expected: {loan_amount}")
             self.assertLessEqual(loan_amount, max_amount,
-                                 f"Loan amount is above the maximum expected: {loan_amount}")     
+                                 f"Loan amount is above the maximum expected: {loan_amount}")   
+            
+    def test_loan_with_ideal_output(self):
+        test_case_3 = {
+            'NewCreditCustomer': 0,              
+            'VerificationType': 'Income_verified',          
+            'Age': 45,                             
+            'Gender': 'Female',                    
+            'AppliedAmount': 1000,               
+            'UseOfLoan': 'Home_improvement',               
+            'EmploymentStatus': 'Fully-Employed',       
+            'EmploymentDurationCurrentEmployer': 'UpTo5years',
+            'OccupationArea': 'Retail_and_wholesale',             
+            'HomeOwnershipType': 'Mortgage',           
+            'TotalIncome': 2000000,                
+            'TotalLiabilities': 10000,            
+            'DebtToIncome': 1.52,                  
+            'FreeCash': 15000,                     
+            'Rating': 'A',                         
+            'CreditScoreEsMicroL': 'M',           
+            'CreditScoreEeMini': 1000,             
+            'NoOfPreviousLoansBeforeLoan': 0,    
+            'AmountOfPreviousLoansBeforeLoan': 0 }
+            
+             # Predicting loan for ideal input.
+            df = loan_processor.data_preprocessor(test_case_3)
+            loan_amount = loan_processor.predict_loan(df)
+
+            print("Predicting loan for ideal case.")
+            self.assertGreaterEqual(loan_amount, min_amount,
+                                    f"Loan amount is below the minimum expected: {loan_amount}")
+            self.assertLessEqual(loan_amount, max_amount,
+                                 f"Loan amount is above the maximum expected: {loan_amount}")   
+            
+          
         
 if __name__ == '__main__':
     unittest.main()
