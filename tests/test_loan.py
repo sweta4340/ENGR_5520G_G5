@@ -67,7 +67,7 @@ class TestLoanAmountTolerance(unittest.TestCase):
                                  f"Loan amount is above the maximum expected: {loan_amount}")
         
     # Case when person has high liabilites applying for high amount.
-    def test_loan_with_high_liabilties(self):
+    def test_loan_with_high_appliedamount(self):
         test_case_2 = {
             'NewCreditCustomer': 'Existing_credit_customer',              
             'VerificationType': 'Income_verified',          
@@ -98,11 +98,11 @@ class TestLoanAmountTolerance(unittest.TestCase):
         min_amount = 740
         max_amount = 3825
             
-        # Predicting loan for person having high liabilites applying for high loan.
+        # Predicting loan for person applying for high loan.
         df = loan_processor.data_preprocessor(test_case_2)
         loan_amount = loan_processor.predict_loan(df)
 
-        print("Predicting loan for person having high liabilites applying for high loan.")
+        print("Predicting loan for person applying for high loan.")
         self.assertGreaterEqual(loan_amount, min_amount,
                                     f"Loan amount is below the minimum expected: {loan_amount}")
         self.assertLessEqual(loan_amount, max_amount,
