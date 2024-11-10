@@ -60,8 +60,6 @@ class LoanProcessor:
         
         loan_df = df[loan_features]
         X = pd.DataFrame(self.loan_scaler_x.transform(loan_df), columns=loan_df.columns)
-        X = X.values.reshape(1, -1)
-        
         y_pred = self.loan_model.predict(X).reshape(-1, 1)
         loan_amount = self.loan_scaler_y.inverse_transform(y_pred)
         
@@ -78,8 +76,6 @@ class LoanProcessor:
         
         prob_df = df[prob_features]
         X = pd.DataFrame(self.defaultprob_scaler_x.transform(prob_df), columns=prob_df.columns)
-        X = X.values.reshape(1, -1)
-        
         y_pred = self.defaultprob_model.predict(X).reshape(-1, 1)
         default_prob = self.defaultprob_scaler_y.inverse_transform(y_pred)
         
@@ -96,8 +92,6 @@ class LoanProcessor:
         
         expreturn_df = df[expreturn_features]
         X = pd.DataFrame(self.expreturn_scaler_x.transform(expreturn_df), columns=expreturn_df.columns)
-        X = X.values.reshape(1, -1)
-        
         y_pred = self.expreturn_model.predict(X).reshape(-1, 1)
         exp_return = self.expreturn_scaler_y.inverse_transform(y_pred)
         
@@ -115,8 +109,6 @@ class LoanProcessor:
         
         interest_df = df[interest_features]
         X = pd.DataFrame(self.interest_scaler_x.transform(interest_df), columns=interest_df.columns)
-        X = X.values.reshape(1, -1)
-        
         y_pred = self.interest_model.predict(X).reshape(-1, 1)
         interest = self.interest_scaler_y.inverse_transform(y_pred)
         
