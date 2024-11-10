@@ -26,7 +26,7 @@ class TestLoanAmountTolerance(unittest.TestCase):
     # Edge case where all the inputs are either zero or unknown. Difficult to determine the prediction.
     def test_loan_with_zero_unknown(self):
         test_case_1 = {
-            'NewCreditCustomer': 'New_credit_customer',
+            'NewCreditCustomer': 'New_credit_Customer',
             'VerificationType': 'Income_unverified',
             'Age': 0,
             'Gender': 'Unknown',
