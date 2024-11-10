@@ -29,7 +29,10 @@ class LoanProcessor:
         df = pd.DataFrame([data])
         categorical_columns = df.select_dtypes(include=['object']).columns.tolist()
         for column in categorical_columns:
-            df[column] = self.encoder.fit_transform(df[column])
+            if column in self.encoder:
+                encoder = self.encoder[column]
+                df[column] = encoder.transform(df[column])  # Use the specific encoder for each column
+
         
         skewed_features = df.apply(lambda x: x.skew()).sort_values(ascending=False)
         threshold = 2
