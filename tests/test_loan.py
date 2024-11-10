@@ -33,7 +33,7 @@ class TestLoanAmountTolerance(unittest.TestCase):
             'AppliedAmount': 0,
             'UseOfLoan': 'Not_set',
             'EmploymentStatus': 'Unknown',
-            'EmploymentDurationCurrentEmployer': 'Not_known',
+            'EmploymentDurationCurrentEmployer': 'Not-known',
             'OccupationArea': 'Not_specified',
             'HomeOwnershipType': 'Unknown',
             'TotalIncome': 0,
