@@ -9,7 +9,7 @@ class TestLoanAmountTolerance(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # Using this method to load all the necessary encoder and scalers.
-        cls.encoder = joblib.load('data_encoder.pkl')
+        cls.encoder = joblib.load('label_encoders.pkl')
         cls.loan_scaler_x = joblib.load('Loan_Amount_Prediction/loan_scaler_X.pkl')
         cls.loan_scaler_y = joblib.load('Loan_Amount_Prediction/loan_scaler_y.pkl')
         cls.defaultprob_scaler_x = joblib.load('Default_Probability_Prediction/defaultprob_scaler_X.pkl')
