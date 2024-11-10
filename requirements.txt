@@ -1,4 +1,4 @@
 joblib
 pandas
 numpy
-scikit-learn  # if using it for machine learning models
+scikit-learn==1.4.1.post1
