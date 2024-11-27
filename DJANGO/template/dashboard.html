@@ -1,0 +1,243 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f5f7;
+            margin: 0;
+            padding: 0;
+            color: #172b4d;
+        }
+        h2 {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 32px;
+            color: #172b4d;
+        }
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        /* Project Card Styles */
+        .project-card {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+        .project-card h3 {
+            color: #0065ff;
+            font-size: 24px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .project-card .project-meta {
+            font-size: 14px;
+            color: #5e6c84;
+            margin-bottom: 10px;
+        }
+        .project-card .project-meta span {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .project-card .description {
+            font-size: 14px;
+            color: #5e6c84;
+            margin-bottom: 15px;
+        }
+        .project-card .sprints-wrapper {
+            margin-top: 15px;
+        }
+
+        /* Sprint Card Styles */
+        .sprint-card {
+            background: #f4f5f7;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        .sprint-card h5 {
+            color: #0065ff;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .sprint-card p {
+            font-size: 14px;
+            color: #5e6c84;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        .status-selector {
+            margin-top: 10px;
+        }
+        .status-selector select {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f4f5f7;
+            color: #172b4d;
+            cursor: pointer;
+        }
+        .status-selector label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* Flex layout for sprints and projects */
+        .projects-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .project-card, .sprint-card {
+            width: 48%;
+        }
+        .no-projects, .no-sprints {
+            text-align: center;
+            font-size: 16px;
+            color: #5e6c84;
+        }
+        /* Progress bar */
+        .progress-bar {
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            position: relative;
+            height: 15px;
+            margin-top: 10px;
+        }
+        .progress-bar-filled {
+            background-color: #0065ff;
+            border-radius: 20px;
+            height: 100%;
+            text-align: center;
+            color: white;
+            line-height: 15px;
+            font-size: 12px;
+        }
+        /* Button styles */
+        .btn {
+            background-color: #0065ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        .btn:hover {
+            background-color: #004bb5;
+        }
+        .btn:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <h2>Ongoing Projects</h2>
+    <div class="container">
+        <div class="projects-wrapper">
+            {% for project in projects %}
+            <div class="project-card">
+                <h3>{{ project.name }}</h3>
+                <div class="project-meta">
+                    <span><strong>Created At:</strong> {{ project.created_at }}</span>
+                    <span><strong>Last Updated:</strong> {{ project.updated_at }}</span>
+                </div>
+                <div class="description">{{ project.description }}</div>
+                
+                <div class="sprints-wrapper">
+                    <h4>Sprints</h4>
+                    {% for sprint in project.sprints.all %}
+                    <div class="sprint-card">
+                        <h5>{{ sprint.name }}</h5>
+                        <p><strong>Status:</strong> {{ sprint.get_status_display }}</p>
+                        
+                        <div class="status-selector">
+                            <label for="status">Change Status:</label>
+                            <select name="status" onchange="updateSprintStatus({{ sprint.id }}, this.value)">
+                                {% for choice_value, choice_label in sprint.STATUS_CHOICES %}
+                                <option value="{{ choice_value }}" {% if sprint.status == choice_value %}selected{% endif %}>
+                                    {{ choice_label }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <p><strong>Start Date:</strong> {{ sprint.start_date }}</p>
+                        <p><strong>End Date:</strong> {{ sprint.end_date }}</p>
+                        
+                        <!-- Progress Bar Based on Status -->
+                        <div class="progress-bar">
+                            {% if sprint.status == 'not_started' %}
+                            <div class="progress-bar-filled" style="width: 10%;">Not Started</div>
+                            {% elif sprint.status == 'in_progress' %}
+                            <div class="progress-bar-filled" style="width: 60%;">In Progress</div>
+                            {% elif sprint.status == 'completed' %}
+                            <div class="progress-bar-filled" style="width: 100%;">Completed</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="no-sprints">No sprints created for this project.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% empty %}
+            <p class="no-projects">No ongoing projects found.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        function updateSprintStatus(sprintId, newStatus) {
+            const csrfToken = "{{ csrf_token }}";
+
+            fetch(`/update-sprint-status/${sprintId}/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken
+                },
+                body: JSON.stringify({ status: newStatus })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (newStatus === 'completed') {
+                        window.location.href = `/submit-feedback/${sprintId}/`;  // Redirect to feedback form
+                    } else {
+                        alert("Sprint status updated successfully!");
+                    }
+                } else {
+                    alert("Failed to update status: " + data.error);
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while updating the sprint status.");
+            });
+        }
+    </script>
+</body>
+</html>
