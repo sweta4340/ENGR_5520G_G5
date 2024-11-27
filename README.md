@@ -1,3 +1,3 @@
 # ENGR_5520G_G5
-LendWise- A system that aids smart lending decisions based on insightful data.
+LoanWise- A system that aids smart lending decisions based on insightful data.
 The aim for our project is to build loan amount prediction system powered by machine learning which helps to a borrower to assess his eligibility for a loan amount based on his personal and financial information. This system is also useful for lenders to visualize and analyze various factors influencing loan approval decisions, behavior and the associated risk. This system enhances Peer-to-Peer lending facility wherein a borrower gets the transparency about their loan estimate they can qualify for and the interest rate which helps them make an informed decision. The process leads to faster approval loans by automating the decision which helps lenders to have better insights about their funding including their profitability and the associated risk
